@@ -1,13 +1,11 @@
 package com.kai.storyapp.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class UserModel (
-    var name: String? = null,
-    var email: String? = null,
-    var password: String? = null,
-    var age: Int = 0,
-    var phoneNumber: String? = null,
-) : Parcelable
+    var name: String,
+    var email: String,
+    var password: String,
+    var age: Int,
+    var phoneNumber: String,
+    val isLogin: Boolean
+)
