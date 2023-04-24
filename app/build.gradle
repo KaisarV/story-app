@@ -7,6 +7,10 @@ android {
     namespace 'com.kai.storyapp'
     compileSdk 33
 
+    buildFeatures {
+        viewBinding true
+    }
+
     defaultConfig {
         applicationId "com.kai.storyapp"
         minSdk 21

@@ -9,12 +9,12 @@
     android:gravity="center"
     android:padding="20dp">
 
-    <EditText
+    <com.kai.storyapp.customview.login.LoginInputEditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="15dp"
-        android:background="@drawable/shape_login_input"
         android:drawableLeft="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
         android:hint="Email"
@@ -22,12 +22,12 @@
         android:textColorHint="@color/white"
         android:textColorHighlight="@color/white"/>
 
-    <EditText
+    <com.kai.storyapp.customview.login.LoginInputEditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:padding="15dp"
-        android:background="@drawable/shape_login_input"
         android:drawableLeft="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
         android:hint="Password"
@@ -35,9 +35,8 @@
         android:textColorHint="@color/white"
         android:textColorHighlight="@color/white"/>
 
-
-
-    <Button
+    <com.kai.storyapp.customview.login.LoginButton
+        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log In"
@@ -46,10 +45,10 @@
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="0dp"
-        android:background="@drawable/shape_login_button"/>
+        android:layout_marginTop="0dp"/>
 
-    <Button
+    <com.kai.storyapp.customview.login.RegisterButton
+        android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign Up"
@@ -59,6 +58,5 @@
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="0dp"
-        android:background="@drawable/shape_register_button"
         android:textColor="@color/white"/>
 </LinearLayout>
