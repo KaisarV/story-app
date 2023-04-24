@@ -23,6 +23,19 @@
         android:textColor="@color/white"/>
 
     <com.kai.storyapp.customview.login.LoginInputEditText
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="15dp"
+        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawablePadding="10dp"
+        android:hint="Email"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorHighlight="@color/white"/>
+
+    <com.kai.storyapp.customview.login.LoginInputEditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -48,28 +61,43 @@
         android:textColorHint="@color/white"
         android:textColorHighlight="@color/white"/>
 
-    <com.kai.storyapp.customview.login.LoginButton
-        android:id="@+id/login"
+    <com.kai.storyapp.customview.login.LoginInputEditText
+        android:id="@+id/age"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Log In"
-        android:shadowColor="@android:color/transparent"
+        android:layout_margin="10dp"
         android:padding="15dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="0dp"/>
+        android:drawableLeft="@drawable/ic_baseline_date_range_24"
+        android:drawablePadding="10dp"
+        android:hint="Age"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorHighlight="@color/white"
+        android:inputType="numberDecimal"/>
 
-    <com.kai.storyapp.customview.login.RegisterButton
+    <com.kai.storyapp.customview.login.LoginInputEditText
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="15dp"
+        android:drawableLeft="@drawable/ic_baseline_local_phone_24"
+        android:drawablePadding="10dp"
+        android:hint="Phone"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textColorHighlight="@color/white"
+        android:inputType="numberDecimal"/>
+
+    <com.kai.storyapp.customview.login.LoginButton
         android:id="@+id/register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sign Up"
+        android:text="register"
         android:shadowColor="@android:color/transparent"
         android:padding="15dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="0dp"
-        android:textColor="@color/white"/>
+        android:layout_marginTop="10dp"/>
 </LinearLayout>

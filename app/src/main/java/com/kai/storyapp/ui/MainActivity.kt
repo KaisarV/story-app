@@ -1,12 +1,11 @@
-package com.kai.storyapp
+package com.kai.storyapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.kai.storyapp.customview.login.LoginButton
 import com.kai.storyapp.customview.login.LoginInputEditText
 import com.kai.storyapp.databinding.ActivityMainBinding
-import java.util.regex.Pattern
+import com.kai.storyapp.utils.Validator.isValidInputEmail
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,18 +29,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (password.text.toString() == "") {
-                email.error = "Password cannot be empty"
+                password.error = "Password cannot be empty"
             }
         }
-
     }
-
-    fun isValidInputEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z](.*)([@]{1})(.{1,})(\\.)(.{1,})"
-        val pattern = Pattern.compile(emailRegex)
-        val matcher = pattern.matcher(email)
-        return matcher.matches()
-    }
-
-
 }
