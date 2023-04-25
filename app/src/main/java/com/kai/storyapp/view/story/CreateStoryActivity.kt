@@ -15,7 +15,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.kai.storyapp.databinding.ActivityCreateStoryBinding
-import com.kai.storyapp.databinding.ActivityRegisterBinding
 import com.kai.storyapp.utils.createTempFile
 import com.kai.storyapp.utils.uriToFile
 import java.io.File
@@ -41,8 +40,9 @@ class CreateStoryActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
-
         binding.cameraButton.setOnClickListener { startTakePhoto() }
+        binding.galleryButton.setOnClickListener { startGallery() }
+        binding.uploadButton.setOnClickListener { finish() }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
