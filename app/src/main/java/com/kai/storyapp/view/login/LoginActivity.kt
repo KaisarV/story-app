@@ -13,9 +13,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
-import com.kai.storyapp.databinding.ActivityMainBinding
+import com.kai.storyapp.databinding.ActivityLoginBinding
 import com.kai.storyapp.model.UserPreference
-import com.kai.storyapp.model.response.LoginResponse
 import com.kai.storyapp.model.response.LoginResult
 import com.kai.storyapp.utils.Validator.isValidInputEmail
 import com.kai.storyapp.view.ViewModelFactory
@@ -27,12 +26,11 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var loginResponse: LoginResult
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupView()
@@ -58,10 +56,6 @@ class LoginActivity : AppCompatActivity() {
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
-
-//        loginViewModel.getUser().observe(this) { loginResponse ->
-//            this.user = user
-//        }
     }
 
     private fun setupAction() {

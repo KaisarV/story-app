@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
 
         homeViewModel.getUser().observe(this) { user ->
             if (user.token.isNotEmpty()) {
-                binding.tvName.text = getString(R.string.greeting, user.name)
+                binding.greeting.text = getString(R.string.greeting, user.name)
             } else {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
