@@ -33,9 +33,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var registerButton: RegisterButton
-
     private lateinit var registerViewModel: RegisterViewModel
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

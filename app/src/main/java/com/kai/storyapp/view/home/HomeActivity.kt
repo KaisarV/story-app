@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -19,8 +20,12 @@ import com.kai.storyapp.adapter.ListStoryAdapter
 import com.kai.storyapp.databinding.ActivityHomeBinding
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ListStoryItem
+import com.kai.storyapp.model.response.LoginResult
+import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.login.LoginActivity
+import com.kai.storyapp.view.register.RegisterActivity
+import com.kai.storyapp.view.story.CreateStoryActivity
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -37,21 +42,8 @@ class HomeActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvUser.layoutManager = layoutManager
 
-        setupView()
         setupViewModel()
-    }
-
-    private fun setupView() {
-        @Suppress("DEPRECATION")
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            window.insetsController?.hide(WindowInsets.Type.statusBars())
-        } else {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN
-            )
-        }
-        supportActionBar?.hide()
+        setupAction()
     }
 
     private fun setupViewModel() {
@@ -81,11 +73,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setUserData(stories: List<ListStoryItem>) {
-
-        for(story in stories){
-            Log.d("NIHHHHHHHHHHHHH", story.id)
-        }
-
         val listUserAdapter = ListStoryAdapter(stories)
 
         binding.rvUser.adapter = listUserAdapter
@@ -96,6 +83,13 @@ class HomeActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.VISIBLE
         } else {
             binding.progressBar.visibility = View.GONE
+        }
+    }
+
+    private fun setupAction() {
+        binding.postingPageButton.setOnClickListener {
+            val intent = Intent(this, CreateStoryActivity::class.java)
+            startActivity(intent)
         }
     }
 }

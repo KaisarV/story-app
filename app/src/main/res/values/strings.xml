@@ -12,5 +12,9 @@
     <string name="timestamp">timestamp</string>
     <string name="create_post_text">Create your post today!</string>
     <string name="create_post">Create Post</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="back">Back</string>
+    <string name="upload">Upload</string>
 
 </resources>
