@@ -12,12 +12,11 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
-import com.kai.storyapp.customview.login.LoginButton
-import com.kai.storyapp.customview.login.LoginInputEditText
-import com.kai.storyapp.customview.login.RegisterButton
+import com.kai.storyapp.R
 import com.kai.storyapp.databinding.ActivityMainBinding
-import com.kai.storyapp.model.UserModel
 import com.kai.storyapp.model.UserPreference
+import com.kai.storyapp.model.response.LoginResponse
+import com.kai.storyapp.model.response.LoginResult
 import com.kai.storyapp.utils.Validator.isValidInputEmail
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.home.HomeActivity
@@ -28,7 +27,7 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(na
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var user: UserModel
+    private lateinit var loginResponse: LoginResult
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,9 +59,9 @@ class LoginActivity : AppCompatActivity() {
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
 
-        loginViewModel.getUser().observe(this) { user ->
-            this.user = user
-        }
+//        loginViewModel.getUser().observe(this) { loginResponse ->
+//            this.user = user
+//        }
     }
 
     private fun setupAction() {
@@ -80,26 +79,29 @@ class LoginActivity : AppCompatActivity() {
                 !isValidInputEmail(binding.email.text.toString()) -> {
                     binding.email.error = "Email is not valid"
                 }
-                email != user.email -> {
-                    binding.email.error = "Email do not match"
-                }
-                password != user.password -> {
-                    binding.password.error = "Password do not match"
-                }
+
                 else -> {
-                    loginViewModel.login()
-                    AlertDialog.Builder(this).apply {
-                        setTitle("Yeah!")
-                        setMessage("Anda berhasil login. Sudah tidak sabar untuk belajar ya?")
-                        setPositiveButton("Lanjut") { _, _ ->
-                            val intent = Intent(context, HomeActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                            finish()
+                    loginViewModel.loginUser(email, password)
+
+                    loginViewModel.loginResponse.observe(this) { loginResponse ->
+                        val login = LoginResult(loginResponse.loginResult.name,
+                            loginResponse.loginResult.userId, loginResponse.loginResult.token)
+                        loginViewModel.login(login)
+
+                        AlertDialog.Builder(this).apply {
+                            setTitle(getString(R.string.yeah))
+                            setMessage(getString(R.string.login_success))
+                            setPositiveButton(getString(R.string.cont)) { _, _ ->
+                                val intent = Intent(context, HomeActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                                startActivity(intent)
+                                finish()
+                            }
+                            create()
+                            show()
                         }
-                        create()
-                        show()
                     }
+
                 }
             }
         }

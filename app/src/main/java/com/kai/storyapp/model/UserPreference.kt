@@ -2,44 +2,34 @@ package com.kai.storyapp.model
 
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
+import com.kai.storyapp.model.response.LoginResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
 
-    fun getUser(): Flow<UserModel> {
+    fun getUser(): Flow<LoginResult> {
         return dataStore.data.map { preferences ->
-            UserModel(
+            LoginResult(
                 preferences[NAME_KEY] ?:"",
-                preferences[EMAIL_KEY] ?:"",
-                preferences[PASSWORD_KEY] ?:"",
-                preferences[AGE] ?:0,
-                preferences[PHONE_NUMBER] ?:"",
-                preferences[STATE_KEY] ?: false
+                preferences[ID_KEY] ?:"",
+                preferences[TOKEN_KEY] ?:"",
             )
         }
     }
 
-    suspend fun saveUser(user: UserModel) {
+    suspend fun login(user: LoginResult) {
         dataStore.edit { preferences ->
             preferences[NAME_KEY] = user.name
-            preferences[EMAIL_KEY] = user.email
-            preferences[PASSWORD_KEY] = user.password
-            preferences[AGE] = user.age
-            preferences[PHONE_NUMBER] = user.phoneNumber
-            preferences[STATE_KEY] = user.isLogin
-        }
-    }
-
-    suspend fun login() {
-        dataStore.edit { preferences ->
-            preferences[STATE_KEY] = true
+            preferences[ID_KEY] = user.userId
+            preferences[TOKEN_KEY] = user.token
         }
     }
 
     suspend fun logout() {
-        dataStore.edit { preferences ->
-            preferences[STATE_KEY] = false
+        dataStore.edit {
+//                preferences ->
+//            preferences[STATE_KEY] = false
         }
     }
 
@@ -48,11 +38,8 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private var INSTANCE: UserPreference? = null
 
         private val NAME_KEY = stringPreferencesKey("name")
-        private val EMAIL_KEY = stringPreferencesKey("email")
-        private val PASSWORD_KEY = stringPreferencesKey("password")
-        private val AGE = intPreferencesKey("age")
-        private val PHONE_NUMBER = stringPreferencesKey("phone")
-        private val STATE_KEY = booleanPreferencesKey("state")
+        private val ID_KEY = stringPreferencesKey("id")
+        private val TOKEN_KEY = stringPreferencesKey("token")
 
         fun getInstance(dataStore: DataStore<Preferences>): UserPreference {
             return INSTANCE ?: synchronized(this) {

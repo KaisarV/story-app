@@ -1,6 +1,11 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">StoryApp</string>
 
 <!--test-->
     <string name="greeting">Halo %1$s,</string>
+    <string name="account_created">Your account has been created !</string>
+    <string name="cont" tools:ignore="ExtraTranslation">Continue</string>
+    <string name="yeah">Yeah!</string>
+    <string name="login_success">Login Success!</string>
+
 </resources>

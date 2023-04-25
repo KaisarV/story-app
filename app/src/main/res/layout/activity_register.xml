@@ -62,34 +62,6 @@
         android:textColorHint="@color/black"
         android:textColorHighlight="@color/black"/>
 
-    <com.kai.storyapp.customview.login.LoginInputEditText
-        android:id="@+id/age"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="15dp"
-        android:drawableStart="@drawable/ic_baseline_date_range_24"
-        android:drawablePadding="10dp"
-        android:hint="Age"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textColorHighlight="@color/black"
-        android:inputType="numberDecimal"/>
-
-    <com.kai.storyapp.customview.login.LoginInputEditText
-        android:id="@+id/phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:padding="15dp"
-        android:drawableStart="@drawable/ic_baseline_local_phone_24"
-        android:drawablePadding="10dp"
-        android:hint="Phone"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
-        android:textColorHighlight="@color/black"
-        android:inputType="numberDecimal"/>
-
     <com.kai.storyapp.customview.login.RegisterButton
         android:id="@+id/register"
         android:layout_width="match_parent"

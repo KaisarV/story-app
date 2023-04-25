@@ -1,11 +1,9 @@
 package com.kai.storyapp.view.register
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.MenuItem
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -19,9 +17,14 @@ import com.kai.storyapp.R
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.customview.login.RegisterButton
 import com.kai.storyapp.databinding.ActivityRegisterBinding
-import com.kai.storyapp.model.UserModel
+import com.kai.storyapp.model.request.RegisterRequest
+import com.kai.storyapp.model.response.RegisterResponse
+import com.kai.storyapp.retrofit.ApiConfig
 import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -32,6 +35,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var registerButton: RegisterButton
 
     private lateinit var registerViewModel: RegisterViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,8 +74,6 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             val name = binding.name.text.toString().trim()
             val email = binding.email.text.toString().trim()
             val password = binding.password.text.toString().trim()
-            val age = binding.age.text.toString().trim()
-            val phone = binding.phone.text.toString().trim()
 
             if (name.isEmpty()) {
                 binding.name.error = "Name cannot be empty"
@@ -87,28 +89,30 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 binding.password.error = "Password cannot be empty"
                 return
             }
-
-            if (age.isEmpty()) {
-                binding.age.error = "Age cannot be empty"
-                return
-            }
-
-            if (phone.isEmpty()) {
-                binding.phone.error = "Phone cannot be empty"
-                return
-            }
-
             else {
-                registerViewModel.saveUser(UserModel(name, email, password, age.toInt(), phone, false))
-                AlertDialog.Builder(this).apply {
-                    setTitle("Yeah!")
-                    setMessage("Akunnya sudah jadi nih. Yuk, login dan belajar coding.")
-                    setPositiveButton("Lanjut") { _, _ ->
-                        finish()
+                val registerRequest = RegisterRequest(name, email, password)
+                val apiService = ApiConfig().getApiService()
+                val register = apiService.registerUser(registerRequest)
+
+                register.enqueue(object : Callback<RegisterResponse> {
+                    override fun onResponse(
+                        call: Call<RegisterResponse>,
+                        response: Response<RegisterResponse>
+                    ) {
+                        if (response.isSuccessful) {
+                            val responseBody = response.body()
+                            if (responseBody != null && !responseBody.error) {
+                                Toast.makeText(this@RegisterActivity, responseBody.message, Toast.LENGTH_SHORT).show()
+                            }
+
+                        } else {
+                            Toast.makeText(this@RegisterActivity, response.message(), Toast.LENGTH_SHORT).show()
+                        }
                     }
-                    create()
-                    show()
-                }
+                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
+                        Toast.makeText(this@RegisterActivity, t.message, Toast.LENGTH_SHORT).show()
+                    }
+                })
             }
         }
     }
