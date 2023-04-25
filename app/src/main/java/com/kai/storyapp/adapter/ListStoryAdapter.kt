@@ -2,6 +2,7 @@ package com.kai.storyapp.adapter
 
 import android.app.Activity
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,7 @@ import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kai.storyapp.R
-import com.kai.storyapp.databinding.ActivityLoginBinding
-import com.kai.storyapp.databinding.StoryItemBinding
+
 import com.kai.storyapp.model.response.ListStoryItem
 import com.kai.storyapp.view.detailstory.DetailStoryActivity
 
@@ -38,12 +38,14 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerVie
         private var tvTimeStamp: TextView = itemView.findViewById(R.id.timestamp)
 
         fun bind(storyItem: ListStoryItem) {
+
             Glide.with(itemView.context)
                 .load(storyItem.photoUrl)
                 .into(imgPhoto)
             tvName.text = storyItem.name
             tvDescription.text = storyItem.description
-            tvTimeStamp.text = storyItem.description
+            tvTimeStamp.text = storyItem.createdAt
+
             itemView.setOnClickListener {
 
                 val optionsCompat: ActivityOptionsCompat =

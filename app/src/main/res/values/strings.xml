@@ -10,5 +10,7 @@
     <string name="user_name">user name</string>
     <string name="description">description</string>
     <string name="timestamp">timestamp</string>
+    <string name="create_post_text">Create your post today!</string>
+    <string name="create_post">Create Post</string>
 
 </resources>

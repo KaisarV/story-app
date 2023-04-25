@@ -4,6 +4,7 @@ import com.kai.storyapp.model.request.LoginRequest
 import com.kai.storyapp.model.request.RegisterRequest
 import com.kai.storyapp.model.response.LoginResponse
 import com.kai.storyapp.model.response.RegisterResponse
+import com.kai.storyapp.model.response.StoryResponse
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -17,4 +18,9 @@ interface ApiService {
     fun loginUser(
         @Body request: LoginRequest,
     ): Call<LoginResponse>
+
+    @GET("/v1/stories")
+    fun stories(
+        @Header("Authorization") token: String
+    ): Call<StoryResponse>
 }
