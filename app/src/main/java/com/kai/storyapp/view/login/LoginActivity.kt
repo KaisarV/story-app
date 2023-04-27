@@ -13,10 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
-import com.kai.storyapp.R
 import com.kai.storyapp.databinding.ActivityLoginBinding
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.LoginResult
@@ -24,13 +21,10 @@ import com.kai.storyapp.utils.Validator.isValidInputEmail
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.home.HomeActivity
 import com.kai.storyapp.view.register.RegisterActivity
-import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
-
-
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
@@ -120,6 +114,5 @@ class LoginActivity : AppCompatActivity() {
             binding.progressBar.visibility = View.GONE
         }
     }
-
 
 }

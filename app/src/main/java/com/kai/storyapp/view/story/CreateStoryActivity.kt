@@ -22,8 +22,6 @@ import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.databinding.ActivityCreateStoryBinding
 import com.kai.storyapp.model.UserPreference
-import com.kai.storyapp.model.response.CreateStoryResponse
-import com.kai.storyapp.retrofit.ApiConfig
 import com.kai.storyapp.utils.createTempFile
 import com.kai.storyapp.utils.reduceFileImage
 import com.kai.storyapp.utils.uriToFile
@@ -32,9 +30,6 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
@@ -80,15 +75,6 @@ class CreateStoryActivity : AppCompatActivity() {
         createStoryViewModel.getUser().observe(this) { user ->
             token = user.token
         }
-
-//        homeViewModel.isLoading.observe(this) {
-//            showLoading(it)
-//        }
-//
-//
-//        homeViewModel.listStory.observe(this) { stories ->
-//            setUserData(stories.listStory)
-//        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
@@ -159,28 +145,17 @@ class CreateStoryActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            val apiService = ApiConfig().getApiService()
-            val uploadImageRequest = apiService.uploadImage("Bearer $token", imageMultipart, description)
+            createStoryViewModel.createStory(token!!, imageMultipart, description)
 
-            uploadImageRequest.enqueue(object : Callback<CreateStoryResponse> {
-                override fun onResponse(
-                    call: Call<CreateStoryResponse>,
-                    response: Response<CreateStoryResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val responseBody = response.body()
-                        if (responseBody != null && !responseBody.error) {
-                            Toast.makeText(this@CreateStoryActivity, responseBody.message, Toast.LENGTH_SHORT).show()
-                            finish()
-                        }
-                    } else {
-                        Toast.makeText(this@CreateStoryActivity, response.message(), Toast.LENGTH_SHORT).show()
-                    }
-                }
-                override fun onFailure(call: Call<CreateStoryResponse>, t: Throwable) {
-                    Toast.makeText(this@CreateStoryActivity, t.message, Toast.LENGTH_SHORT).show()
-                }
-            })
+            createStoryViewModel.createStoryResponse.observe(this) { response ->
+                Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                finish()
+            }
+
+            createStoryViewModel.errorResponse.observe(this) { response ->
+                Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+            }
+
         } else {
             Toast.makeText(this@CreateStoryActivity, "Please insert an image file first."
                 , Toast.LENGTH_SHORT).show()

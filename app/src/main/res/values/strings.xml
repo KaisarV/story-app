@@ -6,7 +6,7 @@
     <string name="account_created">Your account has been created !</string>
     <string name="cont" tools:ignore="ExtraTranslation">Continue</string>
     <string name="yeah">Yeah!</string>
-    <string name="login_success">Login Success!</string>
+    <string name="register_success">Register Success, Now You Can Login!</string>
     <string name="user_name">user name</string>
     <string name="description">description</string>
     <string name="timestamp">timestamp</string>
@@ -19,5 +19,11 @@
     <string name="setting">Setting</string>
     <string name="exit">Exit</string>
     <string name="Logout">Logout</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="log_in">Log In</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
 
 </resources>

@@ -1,6 +1,7 @@
 package com.kai.storyapp.view.register
 
 import android.content.ContentValues
+import android.content.ContentValues.TAG
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
@@ -58,6 +59,7 @@ class RegisterViewModel(private val pref: UserPreference) : ViewModel() {
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _isLoading.value = false
+                Log.e(TAG, "onFailure: ${t.message}")
             }
         })
     }

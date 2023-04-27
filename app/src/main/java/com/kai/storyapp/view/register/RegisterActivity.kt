@@ -1,6 +1,7 @@
 package com.kai.storyapp.view.register
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,10 +23,11 @@ import com.kai.storyapp.model.response.RegisterResponse
 import com.kai.storyapp.retrofit.ApiConfig
 import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
+import com.kai.storyapp.view.home.HomeActivity
+import com.kai.storyapp.view.login.LoginActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -64,6 +66,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[RegisterViewModel::class.java]
+
+        registerViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
     }
 
     override fun onClick(view: View) {
@@ -93,8 +99,25 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
                 registerViewModel.registerResponse.observe(this) { response ->
                     Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                    finish()
+                }
+
+                registerViewModel.errorResponse.observe(this) { response ->
+                    Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

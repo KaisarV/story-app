@@ -2,10 +2,7 @@ package com.kai.storyapp.retrofit
 
 import com.kai.storyapp.model.request.LoginRequest
 import com.kai.storyapp.model.request.RegisterRequest
-import com.kai.storyapp.model.response.CreateStoryResponse
-import com.kai.storyapp.model.response.LoginResponse
-import com.kai.storyapp.model.response.RegisterResponse
-import com.kai.storyapp.model.response.StoryResponse
+import com.kai.storyapp.model.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -33,5 +30,5 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Part file: MultipartBody.Part,
         @Part("description") description: RequestBody,
-    ): Call<CreateStoryResponse>
+    ): Call<ErrorResponse>
 }
