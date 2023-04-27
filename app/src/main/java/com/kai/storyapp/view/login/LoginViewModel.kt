@@ -50,6 +50,7 @@ class LoginViewModel(private val pref: UserPreference) : ViewModel() {
                     _errorResponse.value = gson.fromJson(errJsonString, ErrorResponse::class.java)
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
+                _errorResponse.value = ErrorResponse(null, null)
             }
 
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {

@@ -32,6 +32,7 @@ class CreateStoryViewModel(private val pref: UserPreference) : ViewModel() {
     val errorResponse: LiveData<ErrorResponse> = _errorResponse
 
     fun createStory(token:String, imageMultipart: MultipartBody.Part, description : RequestBody){
+        _isLoading.value = true
         val apiService = ApiConfig().getApiService()
         val uploadImageRequest = apiService.uploadImage("Bearer $token", imageMultipart, description)
 
@@ -40,9 +41,10 @@ class CreateStoryViewModel(private val pref: UserPreference) : ViewModel() {
                 call: Call<ErrorResponse>,
                 response: Response<ErrorResponse>
             ) {
+                _isLoading.value = false
                 if (response.isSuccessful) {
                     val responseBody = response.body()
-                    if (responseBody != null && !responseBody.error) {
+                    if (responseBody != null && !responseBody.error!!) {
                         _createStoryResponse.value = response.body()
                     }
                 } else {
@@ -52,6 +54,7 @@ class CreateStoryViewModel(private val pref: UserPreference) : ViewModel() {
                     _errorResponse.value = gson.fromJson(errJsonString, ErrorResponse::class.java)
                     Log.e(TAG, "onFailure: ${response.message()}")
                 }
+                _errorResponse.value = ErrorResponse(null, null)
             }
             override fun onFailure(call: Call<ErrorResponse>, t: Throwable) {
                 _isLoading.value = false

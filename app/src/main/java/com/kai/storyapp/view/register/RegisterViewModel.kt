@@ -54,8 +54,9 @@ class RegisterViewModel(private val pref: UserPreference) : ViewModel() {
                     val errJsonString = errBody?.string()
                     val gson = Gson()
                     _errorResponse.value = gson.fromJson(errJsonString, ErrorResponse::class.java)
-                    Log.e(ContentValues.TAG, "onFailure: ${response.message()}")
+                    Log.e(TAG, "onFailure: ${response.message()}")
                 }
+                _errorResponse.value = ErrorResponse(null, null)
             }
             override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
                 _isLoading.value = false

@@ -25,5 +25,8 @@
     <string name="email">Email</string>
     <string name="register">Register</string>
     <string name="name">Name</string>
-
+    <string name="password_not_empty">Password cannot be empty </string>
+    <string name="email_not_empty">Email cannot be empty </string>
+    <string name="email_not_valid">Email is not valid</string>
+    <string name="name_not_empty">Name cannot be empty</string>
 </resources>

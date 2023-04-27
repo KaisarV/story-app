@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -74,6 +75,10 @@ class CreateStoryActivity : AppCompatActivity() {
 
         createStoryViewModel.getUser().observe(this) { user ->
             token = user.token
+        }
+
+        createStoryViewModel.isLoading.observe(this) {
+            showLoading(it)
         }
     }
 
@@ -153,12 +158,23 @@ class CreateStoryActivity : AppCompatActivity() {
             }
 
             createStoryViewModel.errorResponse.observe(this) { response ->
-                Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                if(response.message != null){
+                    Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                }
+
             }
 
         } else {
             Toast.makeText(this@CreateStoryActivity, "Please insert an image file first."
                 , Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 

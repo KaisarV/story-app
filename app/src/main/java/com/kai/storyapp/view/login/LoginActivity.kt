@@ -1,10 +1,14 @@
 package com.kai.storyapp.view.login
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -14,6 +18,9 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
+import com.kai.storyapp.R
+import com.kai.storyapp.customview.login.LoginButton
+import com.kai.storyapp.customview.login.LoginInputEditText
 import com.kai.storyapp.databinding.ActivityLoginBinding
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.LoginResult
@@ -28,15 +35,40 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var passwordEditText: LoginInputEditText
+    private lateinit var emailEditText: LoginInputEditText
+    private lateinit var loginButton: LoginButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        passwordEditText = binding.password
+        emailEditText = binding.email
+        loginButton = binding.login
+
         setupView()
         setupViewModel()
         setupAction()
+
+        passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                setEditTextErrorInputMessage()
+            }
+        })
+    }
+
+    private fun setEditTextErrorInputMessage(){
+        val result = passwordEditText.text
+
+        if(result!!.length < 8){
+            passwordEditText.error = "Password length must be more than 8"
+        }
     }
 
     private fun setupView() {
@@ -64,25 +96,25 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupAction() {
-
-        binding.login.setOnClickListener {
-            val email = binding.email.text.toString()
-            val password = binding.password.text.toString()
+        loginButton.setOnClickListener {
+            val email = emailEditText.text.toString()
+            val password =  passwordEditText.text.toString()
             when {
                 email.isEmpty() -> {
-                    binding.email.error = "Email cannot be empty"
+                    emailEditText.error = getString(R.string.email_not_empty)
                 }
                 password.isEmpty() -> {
-                    binding.password.error = "Password cannot be empty"
+                    passwordEditText.error = getString(R.string.password_not_empty)
                 }
                 !isValidInputEmail(binding.email.text.toString()) -> {
-                    binding.email.error = "Email is not valid"
+                    emailEditText.error = getString(R.string.email_not_valid)
                 }
 
                 else -> {
                     loginViewModel.loginUser(email, password)
 
                     loginViewModel.loginResponse.observe(this) { loginResponse ->
+                        Log.d(TAG, "success response")
                         Toast.makeText(this, loginResponse.message, Toast.LENGTH_SHORT).show()
                         val login = LoginResult(loginResponse.loginResult.name,
                             loginResponse.loginResult.userId, loginResponse.loginResult.token)
@@ -95,7 +127,10 @@ class LoginActivity : AppCompatActivity() {
                     }
 
                     loginViewModel.errorResponse.observe(this) { errorResponse ->
-                        Toast.makeText(this, errorResponse.message, Toast.LENGTH_SHORT).show()
+                        if(errorResponse.message != null){
+                            Toast.makeText(this, errorResponse.message, Toast.LENGTH_SHORT).show()
+                        }
+
                     }
                 }
             }

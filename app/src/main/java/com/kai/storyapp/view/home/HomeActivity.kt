@@ -40,10 +40,8 @@ class HomeActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvUser.layoutManager = layoutManager
 
-
         setupViewModel()
         setupAction()
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -91,7 +89,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setUserData(stories: List<ListStoryItem>) {
         val listUserAdapter = ListStoryAdapter(stories)
-
         binding.rvUser.adapter = listUserAdapter
     }
 

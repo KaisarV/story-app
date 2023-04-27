@@ -5,6 +5,8 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
@@ -15,6 +17,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
+import com.kai.storyapp.customview.login.LoginInputEditText
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.customview.login.RegisterButton
 import com.kai.storyapp.databinding.ActivityRegisterBinding
@@ -35,6 +38,9 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var registerButton: RegisterButton
+    private lateinit var passwordEditText: LoginInputEditText
+    private lateinit var emailEditText: LoginInputEditText
+    private lateinit var nameEditText: LoginInputEditText
     private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +48,33 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        passwordEditText = binding.password
+        emailEditText = binding.email
+        nameEditText = binding.name
+        registerButton = binding.register
+
         setupView()
         setupViewModel()
 
-        binding.register.setOnClickListener(this)
+        registerButton.setOnClickListener(this)
+
+        passwordEditText.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                setEditTextErrorInputMessage()
+            }
+        })
+    }
+
+    private fun setEditTextErrorInputMessage(){
+        val result = passwordEditText.text
+
+        if(result!!.length < 8){
+            passwordEditText.error = "Password length must be more than 8"
+        }
     }
 
     private fun setupView() {
@@ -75,22 +104,22 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View) {
         if (view.id == R.id.register) {
             registerButton = binding.register
-            val name = binding.name.text.toString().trim()
-            val email = binding.email.text.toString().trim()
-            val password = binding.password.text.toString().trim()
+            val name = nameEditText.text.toString().trim()
+            val email = emailEditText.text.toString().trim()
+            val password = passwordEditText.text.toString().trim()
 
             if (name.isEmpty()) {
-                binding.name.error = "Name cannot be empty"
+                nameEditText.error = getString(R.string.name_not_empty)
                 return
             }
 
             if (!Validator.isValidInputEmail(email)) {
-                binding.email.error = "Email is not valid"
+                emailEditText.error = getString(R.string.email_not_valid)
                 return
             }
 
             if (password.isEmpty()) {
-                binding.password.error = "Password cannot be empty"
+                passwordEditText.error = getString(R.string.password_not_empty)
                 return
             }
             else {
@@ -98,7 +127,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 registerViewModel.registerUser(registerRequest)
 
                 registerViewModel.registerResponse.observe(this) { response ->
-                    Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, response.message, Toast.LENGTH_LONG).show()
 
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -107,7 +136,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
                 }
 
                 registerViewModel.errorResponse.observe(this) { response ->
-                    Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                    if(response.message != null){
+                        Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                    }
+
                 }
             }
         }
