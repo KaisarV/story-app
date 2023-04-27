@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
 import com.kai.storyapp.model.UserPreference
+import com.kai.storyapp.model.response.ErrorResponse
 import com.kai.storyapp.model.response.LoginResult
 import com.kai.storyapp.model.response.StoryResponse
 import com.kai.storyapp.retrofit.ApiConfig
@@ -15,9 +16,11 @@ import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class HomeViewModel(private val pref: UserPreference) : ViewModel() {
+
+    private val _errorResponse = MutableLiveData<ErrorResponse>()
+    val errorResponse: LiveData<ErrorResponse> = _errorResponse
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -53,11 +56,11 @@ class HomeViewModel(private val pref: UserPreference) : ViewModel() {
     fun getUser(): LiveData<LoginResult> {
         return pref.getUser().asLiveData()
     }
-//
-//    fun logout() {
-//        viewModelScope.launch {
-//            pref.logout()
-//        }
-//    }
+
+    fun logout() {
+        viewModelScope.launch {
+            pref.logout()
+        }
+    }
 
 }

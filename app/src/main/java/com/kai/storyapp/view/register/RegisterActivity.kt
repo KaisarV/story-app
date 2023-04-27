@@ -89,28 +89,11 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
             }
             else {
                 val registerRequest = RegisterRequest(name, email, password)
-                val apiService = ApiConfig().getApiService()
-                val register = apiService.registerUser(registerRequest)
+                registerViewModel.registerUser(registerRequest)
 
-                register.enqueue(object : Callback<RegisterResponse> {
-                    override fun onResponse(
-                        call: Call<RegisterResponse>,
-                        response: Response<RegisterResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            val responseBody = response.body()
-                            if (responseBody != null && !responseBody.error) {
-                                Toast.makeText(this@RegisterActivity, responseBody.message, Toast.LENGTH_SHORT).show()
-                            }
-
-                        } else {
-                            Toast.makeText(this@RegisterActivity, response.message(), Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                        Toast.makeText(this@RegisterActivity, t.message, Toast.LENGTH_SHORT).show()
-                    }
-                })
+                registerViewModel.registerResponse.observe(this) { response ->
+                    Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

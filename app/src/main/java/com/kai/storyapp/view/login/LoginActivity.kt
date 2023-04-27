@@ -5,12 +5,16 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
 import com.kai.storyapp.databinding.ActivityLoginBinding
@@ -20,10 +24,13 @@ import com.kai.storyapp.utils.Validator.isValidInputEmail
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.home.HomeActivity
 import com.kai.storyapp.view.register.RegisterActivity
+import kotlin.coroutines.jvm.internal.CompletedContinuation.context
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
+
+
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
@@ -56,6 +63,10 @@ class LoginActivity : AppCompatActivity() {
             this,
             ViewModelFactory(UserPreference.getInstance(dataStore))
         )[LoginViewModel::class.java]
+
+        loginViewModel.isLoading.observe(this) {
+            showLoading(it)
+        }
     }
 
     private fun setupAction() {
@@ -78,24 +89,20 @@ class LoginActivity : AppCompatActivity() {
                     loginViewModel.loginUser(email, password)
 
                     loginViewModel.loginResponse.observe(this) { loginResponse ->
+                        Toast.makeText(this, loginResponse.message, Toast.LENGTH_SHORT).show()
                         val login = LoginResult(loginResponse.loginResult.name,
                             loginResponse.loginResult.userId, loginResponse.loginResult.token)
                         loginViewModel.login(login)
 
-                        AlertDialog.Builder(this).apply {
-                            setTitle(getString(R.string.yeah))
-                            setMessage(getString(R.string.login_success))
-                            setPositiveButton(getString(R.string.cont)) { _, _ ->
-                                val intent = Intent(context, HomeActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                                finish()
-                            }
-                            create()
-                            show()
-                        }
+                        val intent = Intent(this, HomeActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                        startActivity(intent)
+                        finish()
                     }
 
+                    loginViewModel.errorResponse.observe(this) { errorResponse ->
+                        Toast.makeText(this, errorResponse.message, Toast.LENGTH_SHORT).show()
+                    }
                 }
             }
         }
@@ -103,6 +110,14 @@ class LoginActivity : AppCompatActivity() {
         binding.register.setOnClickListener{
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        if (isLoading) {
+            binding.progressBar.visibility = View.VISIBLE
+        } else {
+            binding.progressBar.visibility = View.GONE
         }
     }
 

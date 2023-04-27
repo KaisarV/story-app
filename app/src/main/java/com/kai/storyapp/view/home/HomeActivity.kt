@@ -6,9 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.WindowInsets
-import android.view.WindowManager
+import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -42,8 +40,29 @@ class HomeActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         binding.rvUser.layoutManager = layoutManager
 
+
         setupViewModel()
         setupAction()
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.option_menu, menu)
+
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.menu1 -> {
+                homeViewModel.logout()
+            }
+            R.id.menu2 -> {
+                finishAffinity()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun setupViewModel() {
@@ -61,11 +80,9 @@ class HomeActivity : AppCompatActivity() {
                 finish()
             }
         }
-
         homeViewModel.isLoading.observe(this) {
             showLoading(it)
         }
-
 
         homeViewModel.listStory.observe(this) { stories ->
             setUserData(stories.listStory)

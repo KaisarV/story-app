@@ -16,5 +16,8 @@
     <string name="gallery">Gallery</string>
     <string name="back">Back</string>
     <string name="upload">Upload</string>
+    <string name="setting">Setting</string>
+    <string name="exit">Exit</string>
+    <string name="Logout">Logout</string>
 
 </resources>

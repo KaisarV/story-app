@@ -7,6 +7,7 @@ import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.view.home.HomeViewModel
 import com.kai.storyapp.view.login.LoginViewModel
 import com.kai.storyapp.view.register.RegisterViewModel
+import com.kai.storyapp.view.story.CreateStoryViewModel
 
 class ViewModelFactory(private val pref: UserPreference) : ViewModelProvider.NewInstanceFactory() {
 
@@ -18,6 +19,9 @@ class ViewModelFactory(private val pref: UserPreference) : ViewModelProvider.New
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(CreateStoryViewModel::class.java) -> {
+                CreateStoryViewModel(pref) as T
             }
 
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {

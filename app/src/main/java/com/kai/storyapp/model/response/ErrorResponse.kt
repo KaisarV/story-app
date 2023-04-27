@@ -2,7 +2,7 @@ package com.kai.storyapp.model.response
 
 import com.google.gson.annotations.SerializedName
 
-data class PostStoryResponse(
+data class ErrorResponse(
 
 	@field:SerializedName("error")
 	val error: Boolean,
