@@ -47,7 +47,6 @@ class CreateStoryActivity : AppCompatActivity() {
     private var getFile: File? = null
     private var token: String? = null
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCreateStoryBinding.inflate(layoutInflater)
@@ -63,6 +62,7 @@ class CreateStoryActivity : AppCompatActivity() {
         binding.cameraButton.setOnClickListener { startTakePhoto() }
         binding.galleryButton.setOnClickListener { startGallery() }
         binding.uploadButton.setOnClickListener { uploadImage() }
+        binding.back.setOnClickListener{ finish() }
 
         setupViewModel()
     }

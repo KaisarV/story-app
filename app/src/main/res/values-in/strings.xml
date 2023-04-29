@@ -1,0 +1,31 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">StoryApp</string>
+
+    <string name="greeting">Halo %1$s,</string>
+    <string name="account_created">Akun Anda telah dibuat!</string>
+    <string name="cont">Lanjutkan</string>
+    <string name="yeah">Yes!</string>
+    <string name="register_success">Pendaftaran berhasil, sekarang Anda dapat login!</string>
+    <string name="user_name">nama pengguna</string>
+    <string name="description">deskripsi</string>
+    <string name="timestamp">timestamp</string>
+    <string name="create_post_text">Buat cerita Anda hari ini!</string>
+    <string name="create_post">Buat Kiriman</string>
+    <string name="camera">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="back">Kembali</string>
+    <string name="upload">Unggah</string>
+    <string name="setting">Pengaturan</string>
+    <string name="exit">Keluar Aplikasi</string>
+    <string name="Logout">Keluar Akun</string>
+    <string name="sign_up">Daftar</string>
+    <string name="log_in">Masuk</string>
+    <string name="password">Kata Sandi</string>
+    <string name="email">Email</string>
+    <string name="register">Daftar</string>
+    <string name="name">Nama</string>
+    <string name="password_not_empty">Kata sandi tidak boleh kosong</string>
+    <string name="email_not_empty">Email tidak boleh kosong</string>
+    <string name="email_not_valid">Email tidak valid</string>
+    <string name="name_not_empty">Nama tidak boleh kosong</string>
+</resources>

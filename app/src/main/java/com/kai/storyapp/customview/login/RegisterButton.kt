@@ -10,7 +10,9 @@ import com.kai.storyapp.R
 
 class RegisterButton: AppCompatButton {
 
-    private lateinit var registerButton: Drawable
+    private lateinit var enabledRegisterButton: Drawable
+    private lateinit var disabledRegisterButton: Drawable
+    private var txtColor: Int = 0
 
     constructor(context: Context) : super(context) {
         init()
@@ -24,10 +26,13 @@ class RegisterButton: AppCompatButton {
 
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
-        background = registerButton
+        background = if(isEnabled) enabledRegisterButton else disabledRegisterButton
+        setTextColor(txtColor)
     }
 
     private fun init() {
-        registerButton = ContextCompat.getDrawable(context, R.drawable.shape_register_button) as Drawable
+        txtColor = ContextCompat.getColor(context, android.R.color.background_light)
+        enabledRegisterButton = ContextCompat.getDrawable(context, R.drawable.shape_register_button) as Drawable
+        disabledRegisterButton = ContextCompat.getDrawable(context, R.drawable.shape_register_button_disable) as Drawable
     }
 }

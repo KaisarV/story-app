@@ -11,26 +11,20 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
 import com.kai.storyapp.customview.login.LoginInputEditText
+import com.kai.storyapp.customview.login.PasswordInputEditText
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.customview.login.RegisterButton
 import com.kai.storyapp.databinding.ActivityRegisterBinding
 import com.kai.storyapp.model.request.RegisterRequest
-import com.kai.storyapp.model.response.RegisterResponse
-import com.kai.storyapp.retrofit.ApiConfig
 import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
-import com.kai.storyapp.view.home.HomeActivity
 import com.kai.storyapp.view.login.LoginActivity
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
@@ -38,7 +32,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
     private lateinit var registerButton: RegisterButton
-    private lateinit var passwordEditText: LoginInputEditText
+    private lateinit var passwordEditText: PasswordInputEditText
     private lateinit var emailEditText: LoginInputEditText
     private lateinit var nameEditText: LoginInputEditText
     private lateinit var registerViewModel: RegisterViewModel
@@ -55,26 +49,31 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
         setupView()
         setupViewModel()
+        setButtonEnable()
 
         registerButton.setOnClickListener(this)
 
         passwordEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                setEditTextErrorInputMessage()
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                setButtonEnable()
+            }
+            override fun afterTextChanged(s: Editable) {
             }
         })
     }
 
-    private fun setEditTextErrorInputMessage(){
+    private fun setButtonEnable() {
         val result = passwordEditText.text
+        registerButton.isEnabled = result != null && isMoreEqualThanEight(result.toString())
+    }
 
-        if(result!!.length < 8){
-            passwordEditText.error = "Password length must be more than 8"
+    private fun isMoreEqualThanEight(text : String): Boolean{
+        if(text.length < 8){
+            return false
         }
+        return true
     }
 
     private fun setupView() {

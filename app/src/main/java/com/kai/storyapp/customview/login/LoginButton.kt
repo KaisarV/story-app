@@ -4,13 +4,16 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
+import android.view.Gravity
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import com.kai.storyapp.R
 
 class LoginButton: AppCompatButton {
 
-    private lateinit var loginButton: Drawable
+    private lateinit var enabledLoginButton: Drawable
+    private lateinit var disabledLoginButton: Drawable
+    private var txtColor: Int = 0
 
     constructor(context: Context) : super(context) {
         init()
@@ -22,12 +25,15 @@ class LoginButton: AppCompatButton {
         init()
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        background = loginButton
+        background = if(isEnabled) enabledLoginButton else disabledLoginButton
+        setTextColor(txtColor)
     }
 
     private fun init() {
-        loginButton = ContextCompat.getDrawable(context, R.drawable.shape_login_button) as Drawable
+        txtColor = ContextCompat.getColor(context, android.R.color.background_dark)
+        enabledLoginButton = ContextCompat.getDrawable(context, R.drawable.shape_login_button) as Drawable
+        disabledLoginButton = ContextCompat.getDrawable(context, R.drawable.shape_login_button_disable) as Drawable
     }
 }

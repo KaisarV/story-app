@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
 import com.kai.storyapp.customview.login.LoginButton
 import com.kai.storyapp.customview.login.LoginInputEditText
+import com.kai.storyapp.customview.login.PasswordInputEditText
 import com.kai.storyapp.databinding.ActivityLoginBinding
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.LoginResult
@@ -35,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var passwordEditText: LoginInputEditText
+    private lateinit var passwordEditText: PasswordInputEditText
     private lateinit var emailEditText: LoginInputEditText
     private lateinit var loginButton: LoginButton
 
@@ -51,25 +52,31 @@ class LoginActivity : AppCompatActivity() {
         setupView()
         setupViewModel()
         setupAction()
+        setButtonEnable()
 
         passwordEditText.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable?) {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
             }
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                setEditTextErrorInputMessage()
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                setButtonEnable()
+            }
+            override fun afterTextChanged(s: Editable) {
             }
         })
     }
 
-    private fun setEditTextErrorInputMessage(){
+    private fun setButtonEnable() {
         val result = passwordEditText.text
-
-        if(result!!.length < 8){
-            passwordEditText.error = "Password length must be more than 8"
-        }
+        loginButton.isEnabled = result != null && isMoreEqualThanEight(result.toString())
     }
+
+    private fun isMoreEqualThanEight(text : String): Boolean{
+        if(text.length < 8){
+            return false
+        }
+        return true
+    }
+
 
     private fun setupView() {
         @Suppress("DEPRECATION")
