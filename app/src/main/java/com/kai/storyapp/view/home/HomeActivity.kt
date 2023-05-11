@@ -22,6 +22,7 @@ import com.kai.storyapp.model.response.LoginResult
 import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.login.LoginActivity
+import com.kai.storyapp.view.map.StoryMapsActivity
 import com.kai.storyapp.view.register.RegisterActivity
 import com.kai.storyapp.view.story.CreateStoryActivity
 
@@ -59,6 +60,9 @@ class HomeActivity : AppCompatActivity() {
             R.id.menu2 -> {
                 finishAffinity()
             }
+            R.id.story_map ->{
+                startActivity(Intent(this, StoryMapsActivity::class.java))
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -78,6 +82,7 @@ class HomeActivity : AppCompatActivity() {
                 finish()
             }
         }
+
         homeViewModel.isLoading.observe(this) {
             showLoading(it)
         }

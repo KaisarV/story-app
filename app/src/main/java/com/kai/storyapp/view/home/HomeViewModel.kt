@@ -3,9 +3,6 @@ package com.kai.storyapp.view.home
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.util.Log
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.*
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ErrorResponse

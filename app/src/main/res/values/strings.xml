@@ -29,5 +29,7 @@
     <string name="email_not_valid">Email is not valid</string>
     <string name="name_not_empty">Name cannot be empty</string>
     <string name="password_more_than_8">Password length must be more than 8</string>
+    <string name="map">map</string>
+    <string name="title_activity_story_maps">StoryMapsActivity</string>
 
 </resources>

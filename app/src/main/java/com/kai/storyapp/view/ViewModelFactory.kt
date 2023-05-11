@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.view.home.HomeViewModel
 import com.kai.storyapp.view.login.LoginViewModel
+import com.kai.storyapp.view.map.StoryMapViewModel
 import com.kai.storyapp.view.register.RegisterViewModel
 import com.kai.storyapp.view.story.CreateStoryViewModel
 
@@ -26,6 +27,9 @@ class ViewModelFactory(private val pref: UserPreference) : ViewModelProvider.New
 
             modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
                 LoginViewModel(pref) as T
+            }
+            modelClass.isAssignableFrom(StoryMapViewModel::class.java) -> {
+                StoryMapViewModel(pref) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
