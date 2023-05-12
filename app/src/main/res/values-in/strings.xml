@@ -28,4 +28,7 @@
     <string name="email_not_empty">Email tidak boleh kosong</string>
     <string name="email_not_valid">Email tidak valid</string>
     <string name="name_not_empty">Nama tidak boleh kosong</string>
+    <string name="password_more_than_8">Panjang password harus lebih dari 8</string>
+    <string name="map">Peta</string>
+    <string name="retry">Coba lagi</string>
 </resources>

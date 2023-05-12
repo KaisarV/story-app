@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kai.storyapp.R
 import com.kai.storyapp.adapter.ListStoryAdapter
+import com.kai.storyapp.adapter.LoadingStateAdapter
 import com.kai.storyapp.databinding.ActivityHomeBinding
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.view.ViewModelFactory
@@ -86,17 +87,17 @@ class HomeActivity : AppCompatActivity() {
     private fun getData() {
         val adapter = ListStoryAdapter()
         binding.rvStory.adapter = adapter
-            homeViewModel.story.observe(this) { story->
-                if (story !== null) {
-                    adapter.submitData(lifecycle, story)
-                }
+
+        binding.rvStory.adapter = adapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                adapter.retry()
             }
-    }
-    private fun showLoading(isLoading: Boolean) {
-        if (isLoading) {
-            binding.progressBar.visibility = View.VISIBLE
-        } else {
-            binding.progressBar.visibility = View.GONE
+        )
+
+        homeViewModel.story.observe(this) { story->
+            if (story !== null) {
+                adapter.submitData(lifecycle, story)
+            }
         }
     }
 

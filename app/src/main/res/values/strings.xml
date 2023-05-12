@@ -30,6 +30,6 @@
     <string name="name_not_empty">Name cannot be empty</string>
     <string name="password_more_than_8">Password length must be more than 8</string>
     <string name="map">map</string>
-    <string name="title_activity_story_maps">StoryMapsActivity</string>
+    <string name="retry">Try again</string>
 
 </resources>
