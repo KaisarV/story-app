@@ -19,7 +19,6 @@ class HomeViewModel(private val pref: UserPreference) : ViewModel() {
 
     fun fillRepo(token : String){
         story = Injection.provideRepository(token).getQuote().cachedIn(viewModelScope)
-        Log.d("aaaaaaa", story.value.toString())
     }
 
     fun getUser(): LiveData<LoginResult> {

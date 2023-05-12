@@ -2,9 +2,7 @@ package com.kai.storyapp.adapter
 
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,10 +12,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.kai.storyapp.R
 import com.kai.storyapp.databinding.StoryItemBinding
-
 import com.kai.storyapp.model.response.ListStoryItem
+import com.kai.storyapp.utils.DateFormatter
 import com.kai.storyapp.view.detailstory.DetailStoryActivity
 
 class ListStoryAdapter :
@@ -49,7 +46,7 @@ class ListStoryAdapter :
                 .into(imgPhoto)
             tvName.text = storyItem.name
             tvDescription.text = storyItem.description
-            tvTimeStamp.text = storyItem.createdAt
+            tvTimeStamp.text = DateFormatter.formatDate(storyItem.createdAt, "Asia/Jakarta")
 
             itemView.setOnClickListener {
 
