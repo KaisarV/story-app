@@ -17,9 +17,6 @@ import com.kai.storyapp.R
 import com.kai.storyapp.adapter.ListStoryAdapter
 import com.kai.storyapp.databinding.ActivityHomeBinding
 import com.kai.storyapp.model.UserPreference
-import com.kai.storyapp.model.response.ListStoryItem
-import com.kai.storyapp.model.response.LoginResult
-import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.login.LoginActivity
 import com.kai.storyapp.view.map.StoryMapsActivity
@@ -39,10 +36,11 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val layoutManager = LinearLayoutManager(this)
-        binding.rvUser.layoutManager = layoutManager
+        binding.rvStory.layoutManager = layoutManager
 
         setupViewModel()
         setupAction()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -75,28 +73,25 @@ class HomeActivity : AppCompatActivity() {
 
         homeViewModel.getUser().observe(this) { user ->
             if (user.token.isNotEmpty()) {
+                homeViewModel.fillRepo(user.token)
                 binding.greeting.text = getString(R.string.greeting, user.name)
-                homeViewModel.getStory(user.token)
+                getData()
             } else {
                 startActivity(Intent(this, LoginActivity::class.java))
                 finish()
             }
         }
-
-        homeViewModel.isLoading.observe(this) {
-            showLoading(it)
-        }
-
-        homeViewModel.listStory.observe(this) { stories ->
-            setUserData(stories.listStory)
-        }
     }
 
-    private fun setUserData(stories: List<ListStoryItem>) {
-        val listUserAdapter = ListStoryAdapter(stories)
-        binding.rvUser.adapter = listUserAdapter
+    private fun getData() {
+        val adapter = ListStoryAdapter()
+        binding.rvStory.adapter = adapter
+            homeViewModel.story.observe(this) { story->
+                if (story !== null) {
+                    adapter.submitData(lifecycle, story)
+                }
+            }
     }
-
     private fun showLoading(isLoading: Boolean) {
         if (isLoading) {
             binding.progressBar.visibility = View.VISIBLE

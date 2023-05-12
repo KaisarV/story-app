@@ -10,32 +10,37 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
+import androidx.paging.PagingDataAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.kai.storyapp.R
+import com.kai.storyapp.databinding.StoryItemBinding
 
 import com.kai.storyapp.model.response.ListStoryItem
 import com.kai.storyapp.view.detailstory.DetailStoryActivity
 
-class ListStoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerView.Adapter<ListStoryAdapter.ListViewHolder>() {
+class ListStoryAdapter :
+    PagingDataAdapter<ListStoryItem, ListStoryAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.story_item, parent, false)
-        return ListViewHolder(view)
+        val binding = StoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        holder.bind(listStory[position])
+        val data = getItem(position)
+        if (data != null) {
+            holder.bind(data)
+        }
     }
 
-    override fun getItemCount(): Int = listStory.size
+    class ListViewHolder(private val binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-    class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        private var imgPhoto: ImageView = itemView.findViewById(R.id.image)
-        private var tvName: TextView = itemView.findViewById(R.id.name)
-        private var tvDescription: TextView = itemView.findViewById(R.id.description)
-        private var tvTimeStamp: TextView = itemView.findViewById(R.id.timestamp)
+        private var imgPhoto: ImageView = binding.image
+        private var tvName: TextView = binding.name
+        private var tvDescription: TextView = binding.description
+        private var tvTimeStamp: TextView = binding.timestamp
 
         fun bind(storyItem: ListStoryItem) {
 
@@ -60,6 +65,18 @@ class ListStoryAdapter(private val listStory: List<ListStoryItem>) : RecyclerVie
                 val intent = Intent(itemView.context, DetailStoryActivity::class.java)
                 intent.putExtra("Story", storyItem)
                 itemView.context.startActivity(intent, optionsCompat.toBundle())
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+            override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
+                return oldItem.id == newItem.id
             }
         }
     }
