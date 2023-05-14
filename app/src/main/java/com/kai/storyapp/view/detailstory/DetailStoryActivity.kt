@@ -24,8 +24,10 @@ class DetailStoryActivity : AppCompatActivity() {
             .load(story.photoUrl)
             .into(binding.storyImageView)
 
-        binding.nameTextView.text = story.name
-        binding.descTextView.text = story.description
-        binding.timestamp.text = story.createdAt
+        binding.apply {
+            nameTextView.text = story.name
+            descTextView.text = story.description
+            timestamp.text = story.createdAt
+        }
     }
 }

@@ -1,12 +1,21 @@
 package com.kai.storyapp.model
 
+import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.*
 import com.kai.storyapp.model.response.LoginResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import androidx.datastore.preferences.core.Preferences
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
-class UserPreference private constructor(private val dataStore: DataStore<Preferences>) {
+class UserPreference constructor(private val dataStore: DataStore<Preferences>) {
+
+    fun getToken(): String {
+        val preferences = runBlocking { dataStore.data.first() }
+        return preferences[TOKEN_KEY] ?: ""
+    }
 
     fun getUser(): Flow<LoginResult> {
         return dataStore.data.map { preferences ->

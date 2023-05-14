@@ -24,8 +24,6 @@ import com.kai.storyapp.view.map.StoryMapsActivity
 import com.kai.storyapp.view.register.RegisterActivity
 import com.kai.storyapp.view.story.CreateStoryActivity
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var homeViewModel: HomeViewModel
@@ -69,12 +67,12 @@ class HomeActivity : AppCompatActivity() {
     private fun setupViewModel() {
         homeViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(this)
         )[HomeViewModel::class.java]
 
         homeViewModel.getUser().observe(this) { user ->
             if (user.token.isNotEmpty()) {
-                homeViewModel.fillRepo(user.token)
+                homeViewModel.getStory()
                 binding.greeting.text = getString(R.string.greeting, user.name)
                 getData()
             } else {

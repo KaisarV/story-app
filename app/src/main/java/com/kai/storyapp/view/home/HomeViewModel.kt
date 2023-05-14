@@ -1,8 +1,6 @@
 package com.kai.storyapp.view.home
 
-
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -13,22 +11,19 @@ import com.kai.storyapp.model.response.ListStoryItem
 import com.kai.storyapp.model.response.LoginResult
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val pref: UserPreference) : ViewModel() {
+class HomeViewModel(val context : Context) : ViewModel() {
 
     lateinit var story: LiveData<PagingData<ListStoryItem>>
 
-    fun fillRepo(token : String){
-        story = Injection.provideRepository(token).getQuote().cachedIn(viewModelScope)
+    fun getStory(){
+        story = Injection.provideRepository(context).getStory().cachedIn(viewModelScope)
     }
 
     fun getUser(): LiveData<LoginResult> {
-        return pref.getUser().asLiveData()
+        return Injection.provideRepository(context).getUser()
     }
 
     fun logout() {
-        viewModelScope.launch {
-            pref.logout()
-        }
+        return Injection.provideRepository(context).logout()
     }
-
 }

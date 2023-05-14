@@ -39,11 +39,6 @@ class CreateStoryActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateStoryBinding
     private lateinit var createStoryViewModel: CreateStoryViewModel
-
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
     private var getFile: File? = null
     private var token: String? = null
 
@@ -176,6 +171,11 @@ class CreateStoryActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
     }
 
 }

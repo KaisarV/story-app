@@ -12,13 +12,13 @@ import com.kai.storyapp.view.map.StoryMapViewModel
 import com.kai.storyapp.view.register.RegisterViewModel
 import com.kai.storyapp.view.story.CreateStoryViewModel
 
-class ViewModelFactory(private val pref: UserPreference) : ViewModelProvider.NewInstanceFactory() {
+class ViewModelFactory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
-                HomeViewModel(pref) as T
+                HomeViewModel(context) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(pref) as T
