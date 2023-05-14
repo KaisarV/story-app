@@ -1,7 +1,9 @@
 package com.kai.storyapp.view.map
 
+import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -10,6 +12,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.kai.storyapp.R
 import com.kai.storyapp.databinding.ActivityStoryMapsBinding
@@ -36,7 +39,10 @@ class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         setupViewModel()
+
     }
+
+
 
     private fun setupViewModel() {
         storyMapViewModel = ViewModelProvider(
@@ -62,6 +68,20 @@ class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             addManyMarker(storyMap.listStory)
         }
 
+        setMapStyle()
+
+    }
+
+    private fun setMapStyle() {
+        try {
+            val success =
+                mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.map_style))
+            if (!success) {
+                Log.e(TAG, "Style parsing failed.")
+            }
+        } catch (exception: Resources.NotFoundException) {
+            Log.e(TAG, "Can't find style. Error: ", exception)
+        }
     }
 
     data class TourismPlace(
@@ -101,6 +121,10 @@ class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
             is String -> value.toDoubleOrNull()
             else -> null
         }
+    }
+
+    companion object {
+        private const val TAG = "MapsActivity"
     }
 
 }
