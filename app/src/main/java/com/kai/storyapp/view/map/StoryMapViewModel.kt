@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import com.kai.storyapp.di.Injection
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.LocationResponse
 import com.kai.storyapp.model.response.LoginResult
@@ -14,7 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class StoryMapViewModel(private val pref: UserPreference) : ViewModel() {
+class StoryMapViewModel(private val context : Context) : ViewModel() {
     private val _storyMapResponse = MutableLiveData<LocationResponse>()
     val storyMapResponse: LiveData<LocationResponse> = _storyMapResponse
 
@@ -47,7 +48,7 @@ class StoryMapViewModel(private val pref: UserPreference) : ViewModel() {
     }
 
     fun getUser(): LiveData<LoginResult> {
-        return pref.getUser().asLiveData()
+        return Injection.provideAuthRepository(context).getUser()
     }
 
 }

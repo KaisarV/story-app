@@ -1,23 +1,16 @@
 package com.kai.storyapp.view.register
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.kai.storyapp.model.UserPreference
-import com.kai.storyapp.model.request.LoginRequest
 import com.kai.storyapp.model.request.RegisterRequest
 import com.kai.storyapp.model.response.ErrorResponse
-import com.kai.storyapp.model.response.LoginResponse
 import com.kai.storyapp.model.response.RegisterResponse
-import com.kai.storyapp.model.response.StoryResponse
 import com.kai.storyapp.retrofit.ApiConfig
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

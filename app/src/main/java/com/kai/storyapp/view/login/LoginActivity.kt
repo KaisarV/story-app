@@ -13,7 +13,6 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
@@ -23,14 +22,11 @@ import com.kai.storyapp.customview.login.LoginButton
 import com.kai.storyapp.customview.login.LoginInputEditText
 import com.kai.storyapp.customview.login.PasswordInputEditText
 import com.kai.storyapp.databinding.ActivityLoginBinding
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.LoginResult
 import com.kai.storyapp.utils.Validator.isValidInputEmail
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.home.HomeActivity
 import com.kai.storyapp.view.register.RegisterActivity
-
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class LoginActivity : AppCompatActivity() {
 
@@ -77,7 +73,6 @@ class LoginActivity : AppCompatActivity() {
         return true
     }
 
-
     private fun setupView() {
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -94,7 +89,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(this)
         )[LoginViewModel::class.java]
 
         loginViewModel.isLoading.observe(this) {

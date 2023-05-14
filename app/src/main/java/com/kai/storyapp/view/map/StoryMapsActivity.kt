@@ -1,7 +1,6 @@
 package com.kai.storyapp.view.map
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.datastore.core.DataStore
@@ -21,10 +20,7 @@ import com.kai.storyapp.databinding.ActivityStoryMapsBinding
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ListStoryLocationItem
 import com.kai.storyapp.view.ViewModelFactory
-import com.kai.storyapp.view.home.HomeViewModel
-import com.kai.storyapp.view.login.LoginActivity
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
@@ -50,7 +46,7 @@ class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupViewModel() {
         storyMapViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(this)
         )[StoryMapViewModel::class.java]
 
         storyMapViewModel.getUser().observe(this) { user ->

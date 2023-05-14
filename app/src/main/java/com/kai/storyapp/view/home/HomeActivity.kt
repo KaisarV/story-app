@@ -1,27 +1,18 @@
 package com.kai.storyapp.view.home
 
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.appcompat.app.AlertDialog
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.kai.storyapp.R
 import com.kai.storyapp.adapter.ListStoryAdapter
 import com.kai.storyapp.adapter.LoadingStateAdapter
 import com.kai.storyapp.databinding.ActivityHomeBinding
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.login.LoginActivity
 import com.kai.storyapp.view.map.StoryMapsActivity
-import com.kai.storyapp.view.register.RegisterActivity
 import com.kai.storyapp.view.story.CreateStoryActivity
 
 class HomeActivity : AppCompatActivity() {

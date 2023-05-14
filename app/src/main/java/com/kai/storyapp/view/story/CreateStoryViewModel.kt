@@ -1,9 +1,7 @@
 package com.kai.storyapp.view.story
 
-import android.content.ContentValues
 import android.content.ContentValues.TAG
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +10,6 @@ import com.google.gson.Gson
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ErrorResponse
 import com.kai.storyapp.model.response.LoginResult
-import com.kai.storyapp.model.response.RegisterResponse
 import com.kai.storyapp.retrofit.ApiConfig
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
