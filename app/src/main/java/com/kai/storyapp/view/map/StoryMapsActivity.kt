@@ -1,11 +1,7 @@
 package com.kai.storyapp.view.map
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -17,7 +13,6 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import com.kai.storyapp.R
 import com.kai.storyapp.databinding.ActivityStoryMapsBinding
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ListStoryLocationItem
 import com.kai.storyapp.view.ViewModelFactory
 
@@ -35,7 +30,7 @@ class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
         binding = ActivityStoryMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -46,7 +41,7 @@ class StoryMapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun setupViewModel() {
         storyMapViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(this)
+            ViewModelFactory.getInstance(this)
         )[StoryMapViewModel::class.java]
 
         storyMapViewModel.getUser().observe(this) { user ->

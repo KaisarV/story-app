@@ -6,7 +6,6 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.kai.storyapp.repository.StoryRepository
 import com.kai.storyapp.model.UserPreference
-import com.kai.storyapp.repository.AuthRepository
 import com.kai.storyapp.retrofit.ApiConfig
 
 val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
@@ -16,12 +15,5 @@ object Injection {
         val pref = UserPreference.getInstance(dataStore)
         val apiService = ApiConfig().getApiService()
         return StoryRepository(apiService, pref)
-    }
-
-    fun provideAuthRepository(context: Context): AuthRepository {
-        val dataStore = context.dataStore
-        val pref = UserPreference.getInstance(dataStore)
-        val apiService = ApiConfig().getApiService()
-        return AuthRepository(pref)
     }
 }

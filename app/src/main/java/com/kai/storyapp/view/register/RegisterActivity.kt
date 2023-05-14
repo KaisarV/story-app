@@ -1,6 +1,5 @@
 package com.kai.storyapp.view.register
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +10,10 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
 import com.kai.storyapp.customview.login.LoginInputEditText
 import com.kai.storyapp.customview.login.PasswordInputEditText
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.customview.login.RegisterButton
 import com.kai.storyapp.databinding.ActivityRegisterBinding
 import com.kai.storyapp.model.request.RegisterRequest
@@ -86,11 +81,10 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
         }
         supportActionBar?.hide()
     }
-
     private fun setupViewModel() {
         registerViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(this)
+            ViewModelFactory.getInstance(this)
         )[RegisterViewModel::class.java]
 
         registerViewModel.isLoading.observe(this) {

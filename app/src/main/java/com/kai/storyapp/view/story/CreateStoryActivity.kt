@@ -6,22 +6,20 @@ import android.content.Intent
 import android.content.Intent.ACTION_GET_CONTENT
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.location.LocationManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.databinding.ActivityCreateStoryBinding
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.utils.createTempFile
 import com.kai.storyapp.utils.reduceFileImage
 import com.kai.storyapp.utils.uriToFile
@@ -39,6 +37,8 @@ class CreateStoryActivity : AppCompatActivity() {
     private lateinit var createStoryViewModel: CreateStoryViewModel
     private var getFile: File? = null
     private var token: String? = null
+    private var latitude : Double? = null
+    private var longitude : Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +58,51 @@ class CreateStoryActivity : AppCompatActivity() {
         binding.back.setOnClickListener{ finish() }
 
         setupViewModel()
+
+    }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                getMyLocation()
+            }
+        }
+    private fun getMyLocation(): Pair<Double?, Double?> {
+        if (ContextCompat.checkSelfPermission(
+                this.applicationContext,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+            try {
+                val location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    ?: locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+
+                location?.let {
+                    val latitude = location.latitude
+                    val longitude = location.longitude
+
+                    return Pair(latitude, longitude)
+                }
+            } catch (exception: SecurityException) {
+                Log.e("Location", "Error: ${exception.localizedMessage}")
+                return Pair(null, null)
+            }
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            return Pair(null, null)
+        }
+
+        return Pair(null, null)
     }
 
     private fun setupViewModel() {
         createStoryViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(this)
+            ViewModelFactory.getInstance(this)
         )[CreateStoryViewModel::class.java]
 
         createStoryViewModel.getUser().observe(this) { user ->
@@ -72,6 +111,7 @@ class CreateStoryActivity : AppCompatActivity() {
 
         createStoryViewModel.isLoading.observe(this) {
             showLoading(it)
+
         }
     }
 
@@ -143,18 +183,26 @@ class CreateStoryActivity : AppCompatActivity() {
                 requestImageFile
             )
 
-            createStoryViewModel.createStory(token!!, imageMultipart, description)
+            if (binding.checkbox.isChecked){
+                val (lat, long) = getMyLocation()
+                latitude = lat
+                longitude = long
+            }
+
+            createStoryViewModel.createStory(token!!, imageMultipart, description, latitude, longitude)
 
             createStoryViewModel.createStoryResponse.observe(this) { response ->
                 Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
-                finish()
+                if(response.error == false){
+                    finish()
+                }
+
             }
 
             createStoryViewModel.errorResponse.observe(this) { response ->
                 if(response.message != null){
                     Toast.makeText(this, response.message, Toast.LENGTH_SHORT).show()
                 }
-
             }
 
         } else {

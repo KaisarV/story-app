@@ -1,20 +1,13 @@
 package com.kai.storyapp.view.map
 
-import android.content.ContentValues
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.kai.storyapp.di.Injection
 import com.kai.storyapp.model.response.LocationResponse
 import com.kai.storyapp.model.response.LoginResult
-import com.kai.storyapp.retrofit.ApiConfig
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.kai.storyapp.repository.StoryRepository
 
-class StoryMapViewModel(private val context : Context) : ViewModel() {
+class StoryMapViewModel(private val repo : StoryRepository) : ViewModel() {
     private val _storyMapResponse = MutableLiveData<LocationResponse>()
     val storyMapResponse: LiveData<LocationResponse> = _storyMapResponse
 
@@ -24,7 +17,7 @@ class StoryMapViewModel(private val context : Context) : ViewModel() {
     fun getStoryLocation(token: String) {
         _isLoading.value = true
 
-        val storyMapResponseLiveData = Injection.provideRepository(context).getStoryLocation(token)
+        val storyMapResponseLiveData = repo.getStoryLocation(token)
 
         storyMapResponseLiveData.observeForever { locationResponse ->
             _storyMapResponse.value = locationResponse
@@ -33,7 +26,7 @@ class StoryMapViewModel(private val context : Context) : ViewModel() {
     }
 
     fun getUser(): LiveData<LoginResult> {
-        return Injection.provideAuthRepository(context).getUser()
+        return repo.getUser()
     }
 
 }

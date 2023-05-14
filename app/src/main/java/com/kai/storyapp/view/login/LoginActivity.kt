@@ -1,7 +1,6 @@
 package com.kai.storyapp.view.login
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -13,9 +12,6 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.lifecycle.ViewModelProvider
 import com.kai.storyapp.R
 import com.kai.storyapp.customview.login.LoginButton
@@ -89,7 +85,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setupViewModel() {
         loginViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(this)
+            ViewModelFactory.getInstance(this)
         )[LoginViewModel::class.java]
 
         loginViewModel.isLoading.observe(this) {

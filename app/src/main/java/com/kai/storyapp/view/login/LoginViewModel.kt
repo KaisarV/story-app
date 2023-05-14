@@ -1,23 +1,20 @@
 package com.kai.storyapp.view.login
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.*
 import com.google.gson.Gson
-import com.kai.storyapp.di.Injection
-
 import com.kai.storyapp.model.request.LoginRequest
 import com.kai.storyapp.model.response.ErrorResponse
 import com.kai.storyapp.model.response.LoginResponse
 import com.kai.storyapp.model.response.LoginResult
+import com.kai.storyapp.repository.StoryRepository
 import com.kai.storyapp.retrofit.ApiConfig
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginViewModel(private val context: Context) : ViewModel() {
+class LoginViewModel(private val repo: StoryRepository) : ViewModel() {
 
     private val _loginResponse = MutableLiveData<LoginResponse>()
     val loginResponse: LiveData<LoginResponse> = _loginResponse
@@ -62,6 +59,6 @@ class LoginViewModel(private val context: Context) : ViewModel() {
     }
 
     fun login(user: LoginResult) {
-        return Injection.provideAuthRepository(context).login(user)
+        return repo.login(user)
     }
 }

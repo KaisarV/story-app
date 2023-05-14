@@ -31,5 +31,6 @@
     <string name="password_more_than_8">Password length must be more than 8</string>
     <string name="map">map</string>
     <string name="retry">Try again</string>
+    <string name="upload_loc_info">Upload with location information</string>
 
 </resources>

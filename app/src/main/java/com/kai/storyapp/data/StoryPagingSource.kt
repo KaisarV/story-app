@@ -1,6 +1,5 @@
 package com.kai.storyapp.data
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.kai.storyapp.model.response.ListStoryItem
@@ -33,5 +32,4 @@ class StoryPagingSource (private val apiService: ApiService, val token : String)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
         }
     }
-
 }

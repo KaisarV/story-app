@@ -17,12 +17,19 @@ import com.kai.storyapp.model.response.ListStoryItem
 import com.kai.storyapp.utils.DateFormatter
 import com.kai.storyapp.view.detailstory.DetailStoryActivity
 
-class ListStoryAdapter :
-    PagingDataAdapter<ListStoryItem, ListStoryAdapter.ListViewHolder>(DIFF_CALLBACK) {
+class ListStoryAdapter : PagingDataAdapter<ListStoryItem, ListStoryAdapter.ListViewHolder>(DIFF_CALLBACK) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val binding = StoryItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return ListViewHolder(binding)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ListViewHolder {
+        return ListViewHolder(
+            StoryItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
@@ -32,7 +39,7 @@ class ListStoryAdapter :
         }
     }
 
-    class ListViewHolder(private val binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ListViewHolder(binding: StoryItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         private var imgPhoto: ImageView = binding.image
         private var tvName: TextView = binding.name
@@ -40,6 +47,7 @@ class ListStoryAdapter :
         private var tvTimeStamp: TextView = binding.timestamp
 
         fun bind(storyItem: ListStoryItem) {
+
 
             Glide.with(itemView.context)
                 .load(storyItem.photoUrl)
@@ -67,7 +75,7 @@ class ListStoryAdapter :
     }
 
     companion object {
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
+        val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ListStoryItem>() {
             override fun areItemsTheSame(oldItem: ListStoryItem, newItem: ListStoryItem): Boolean {
                 return oldItem == newItem
             }

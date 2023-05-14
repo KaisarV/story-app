@@ -1,22 +1,21 @@
 package com.kai.storyapp.view.register
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.gson.Gson
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.request.RegisterRequest
 import com.kai.storyapp.model.response.ErrorResponse
 import com.kai.storyapp.model.response.RegisterResponse
+import com.kai.storyapp.repository.StoryRepository
 import com.kai.storyapp.retrofit.ApiConfig
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class RegisterViewModel(private val context: Context) : ViewModel() {
+class RegisterViewModel(private val repo : StoryRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading

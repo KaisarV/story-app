@@ -1,17 +1,14 @@
 package com.kai.storyapp.view.story
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
-import com.kai.storyapp.di.Injection
-import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ErrorResponse
 import com.kai.storyapp.model.response.LoginResult
+import com.kai.storyapp.repository.StoryRepository
 import com.kai.storyapp.retrofit.ApiConfig
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -19,7 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreateStoryViewModel(private val context : Context) : ViewModel() {
+class CreateStoryViewModel(private val repo:StoryRepository) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -30,10 +27,10 @@ class CreateStoryViewModel(private val context : Context) : ViewModel() {
     private val _errorResponse = MutableLiveData<ErrorResponse>()
     val errorResponse: LiveData<ErrorResponse> = _errorResponse
 
-    fun createStory(token:String, imageMultipart: MultipartBody.Part, description : RequestBody){
+    fun createStory(token:String, imageMultipart: MultipartBody.Part, description : RequestBody, lat:Double?, lon:Double?){
         _isLoading.value = true
         val apiService = ApiConfig().getApiService()
-        val uploadImageRequest = apiService.uploadImage("Bearer $token", imageMultipart, description)
+        val uploadImageRequest = apiService.uploadImage("Bearer $token", imageMultipart, description, lat, lon)
 
         uploadImageRequest.enqueue(object : Callback<ErrorResponse> {
             override fun onResponse(
@@ -63,6 +60,6 @@ class CreateStoryViewModel(private val context : Context) : ViewModel() {
     }
 
     fun getUser(): LiveData<LoginResult> {
-        return Injection.provideAuthRepository(context).getUser()
+        return repo.getUser()
     }
 }
