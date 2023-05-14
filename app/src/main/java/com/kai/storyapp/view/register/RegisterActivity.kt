@@ -26,8 +26,6 @@ import com.kai.storyapp.utils.Validator
 import com.kai.storyapp.view.ViewModelFactory
 import com.kai.storyapp.view.login.LoginActivity
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
-
 class RegisterActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var binding: ActivityRegisterBinding
@@ -92,7 +90,7 @@ class RegisterActivity : AppCompatActivity(), View.OnClickListener {
     private fun setupViewModel() {
         registerViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(this)
         )[RegisterViewModel::class.java]
 
         registerViewModel.isLoading.observe(this) {

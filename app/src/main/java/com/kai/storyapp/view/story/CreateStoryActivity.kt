@@ -32,7 +32,6 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 
 class CreateStoryActivity : AppCompatActivity() {
 
@@ -64,7 +63,7 @@ class CreateStoryActivity : AppCompatActivity() {
     private fun setupViewModel() {
         createStoryViewModel = ViewModelProvider(
             this,
-            ViewModelFactory(UserPreference.getInstance(dataStore))
+            ViewModelFactory(this)
         )[CreateStoryViewModel::class.java]
 
         createStoryViewModel.getUser().observe(this) { user ->

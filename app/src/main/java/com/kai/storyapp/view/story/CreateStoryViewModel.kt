@@ -1,12 +1,14 @@
 package com.kai.storyapp.view.story
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.google.gson.Gson
+import com.kai.storyapp.di.Injection
 import com.kai.storyapp.model.UserPreference
 import com.kai.storyapp.model.response.ErrorResponse
 import com.kai.storyapp.model.response.LoginResult
@@ -17,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CreateStoryViewModel(private val pref: UserPreference) : ViewModel() {
+class CreateStoryViewModel(private val context : Context) : ViewModel() {
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -61,6 +63,6 @@ class CreateStoryViewModel(private val pref: UserPreference) : ViewModel() {
     }
 
     fun getUser(): LiveData<LoginResult> {
-        return pref.getUser().asLiveData()
+        return Injection.provideAuthRepository(context).getUser()
     }
 }
